@@ -8,7 +8,7 @@
 </head>
 <body>
 <%
-	String error = request.getParameter("error");
+	String error = (String) request.getParameter("error");
 	System.out.println(error);
 	if (error != null) {
 		out.println("<script>alert('" + error + "')</script>");
@@ -17,14 +17,14 @@
 	<center>
 	<h3>Member Login</h3><br>
 	<hr>
-	<form name="loginForm" action=/jspbook/member/loginProc.jsp method=post>
+	<form name="loginForm" action=/jspbook/member/loginProcServlet method=post>
 		<label><span>ID:</span>
-			<input type="text" name="id" size="10" ></label>
+			<input type="text" name="id" size="10" ></label><br>
 		<label><span>Password:</span>
 			<input type="password" name="password" size="10" ></label><br>
 		<label><span></span>
 			<input type="submit" value="로그인" name="B1">&nbsp;&nbsp;</label>
-			<button onclick="href='/jspbook/ch05/register.html'">회원가입 </button>
+			<button onclick="location.href='register.html'">회원가입 </button>
 	</form>
 	</center>
 </body>

@@ -8,12 +8,16 @@
 		display : block;
 		padding : 10px;
 	}
+	lable span {
+			display : inline-block;
+			padding : 10px;
+	}
 </style>
 </head>
 <body>
 	<h3>회원 가입</h3>
 	<hr>
-	<form name="registerForm" action=/jspbook/member/registerProc.jsp method=post>
+	<form name="registerForm" action=/jspbook/member/registerProcServlet method=post>
 		<label><span>Password:</span>
 			<input type="password" name="password" size="10" ></label>
 		<label><span>Name:</span>
