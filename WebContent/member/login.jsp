@@ -17,14 +17,14 @@
 	<center>
 	<h3>Member Login</h3><br>
 	<hr>
-	<form name="loginForm" action=/jspbook/member/loginProcServlet method=post>
+	<form name="loginForm" action="/jspbook/member/memberProcServlet?action=login" method=post>
 		<label><span>ID:</span>
 			<input type="text" name="id" size="10" ></label><br>
 		<label><span>Password:</span>
 			<input type="password" name="password" size="10" ></label><br>
 		<label><span></span>
 			<input type="submit" value="로그인" name="B1">&nbsp;&nbsp;</label>
-			<button onclick="location.href='register.html'">회원가입 </button>
+			<button type="button" onclick="location.href='register.html'">회원가입 </button>
 	</form>
 	</center>
 </body>

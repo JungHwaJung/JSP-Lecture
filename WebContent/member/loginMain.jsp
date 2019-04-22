@@ -14,6 +14,8 @@
 </head>
 <body>
 	<h3>회원 명단</h3>
+	<%=(String)session.getAttribute("memberName")%> 회원님 반갑습니다.
+	<a href="/jspbook/member/memberProcServlet?action=logout">로그아웃</a>
 	<hr>
 	<table border="1" style="border-collapse:collapse;">
 	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th><th>액션</th></tr>

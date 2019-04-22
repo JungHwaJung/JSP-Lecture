@@ -22,7 +22,7 @@
 %>
 	<h3>회원 수정</h3>
 	<hr>
-	<form name="registerForm" action=/jspbook/member/UpdateMemberServlet method=post>
+	<form name="updateForm" action="/jspbook/member/memberProcServlet?action=execute" method=post>
 		<input type="hidden" id="id" name="id" value="<%=member.getId() %>">
 		<label><span>Id:</span>
 			<%=member.getId() %></label>
