@@ -60,7 +60,7 @@ public class MemberProc extends HttpServlet {
 				break;
 			}
 			mDao = new MemberDAO();
-			member = mDao.selectOne(id);
+			member = mDao.searchById(id);
 			request.setAttribute("member", member);
 			rd = request.getRequestDispatcher("update.jsp");
 			rd.forward(request, response);
@@ -112,7 +112,7 @@ public class MemberProc extends HttpServlet {
 			}
 			
 			if (result == MemberDAO.ID_PASSWORD_MATCH) {
-				member = mDao.selectOne(id);
+				member = mDao.searchById(id);
 				session.setAttribute("memberId", id);
 				session.setAttribute("memberName", member.getName());
 				response.sendRedirect("loginMain.jsp");
@@ -139,9 +139,17 @@ public class MemberProc extends HttpServlet {
 			
 			mDao = new MemberDAO();
 			mDao.insertMember(member);
-			mDao.close();
+			member = mDao.resentId();
+			session.setAttribute("memberId", member.getId());
+			session.setAttribute("memberName", name);
 			
-			response.sendRedirect("loginMain.jsp");
+			message = "귀하의 아이디는 " + member.getId() + " 입니다.";
+			url = "loginMain.jsp";
+			request.setAttribute("message", message);
+			request.setAttribute("url", url);
+			rd = request.getRequestDispatcher("alertMsg.jsp");
+			rd.forward(request, response);
+			mDao.close();
 			break;
 			
 		case "execute":

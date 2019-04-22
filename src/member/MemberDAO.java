@@ -27,13 +27,11 @@ public class MemberDAO {
         } 
 	}
 	
-	public MemberDTO selectOne(int id) {
-		String query = "select * from member where id=?;";
+	public MemberDTO selectOne(String query) {
 		PreparedStatement pStmt= null;
 		MemberDTO members = new MemberDTO();
 		try {
 			pStmt = conn.prepareStatement(query);
-			pStmt.setInt(1, id);
 			ResultSet rs = pStmt.executeQuery();
 			
 			while (rs.next()) {
@@ -188,14 +186,20 @@ public class MemberDAO {
 		return memberList;
 	}
 	
-	public List<MemberDTO> selectAll() {
-		String sql = "select * from member";
-		List<MemberDTO> memberList = selectCondition(sql);
-		return memberList;
+	 public MemberDTO searchById(int memberId) {
+	    	String sql = "select * from member where id=" + memberId + ";";
+	    	MemberDTO mDto = selectOne(sql);
+	    	return mDto;
+	    }
+	
+	public MemberDTO resentId() {
+		String sql = "select * from member order by id desc limit 1;";
+    	MemberDTO mDto = selectOne(sql);
+    	return mDto;
 	}
 	
-	public List<MemberDTO> searchMemberByName(String name) {
-		String sql = "select * from member where name like '" + name + "';";
+	public List<MemberDTO> selectAll() {
+		String sql = "select * from member";
 		List<MemberDTO> memberList = selectCondition(sql);
 		return memberList;
 	}
