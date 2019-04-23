@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="member.*" import="java.util.*"%>
 <%
+	request.setCharacterEncoding("UTF-8");
 	MemberDAO mDao = new MemberDAO();
 	List<MemberDTO> list = mDao.selectAll();
 	mDao.close();
@@ -27,6 +28,7 @@
 	<h3>회원 명단</h3>
 	<%=(String)session.getAttribute("memberName")%> 회원님 반갑습니다.
 	<a href="twitter_list.jsp">트윗</a>&nbsp;&nbsp;&nbsp;
+	<a href="noticeBoard.jsp">게시판</a>&nbsp;&nbsp;&nbsp;
 	<a href="/jspbook/member/memberProcServlet?action=logout">로그아웃</a>
 	<hr>
 	<table border="1" style="border-collapse:collapse;">
