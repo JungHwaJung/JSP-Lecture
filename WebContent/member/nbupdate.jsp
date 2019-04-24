@@ -7,6 +7,7 @@
 <title>글 수정</title>
 </head>
 <body>
+<div align=center>
 <%
 	BbsMember member = (BbsMember) request.getAttribute("bDto");
 %>
@@ -14,15 +15,14 @@
 	<hr>
 	<form name="nbupdateForm" action="/jspbook/member/noticeServlet?action=execute" method=post>
 		<input type="hidden" id="id" name="id" value="<%=member.getId() %>">
-		<label><span>Id:</span>
-			<%=member.getId() %></label>
-		<label><span>제목:</span>
-			<input type="text" name="title" value="<%=member.getTitle() %>" size="10" ></label>
-		<label><span>내용:</span>
-			<input type="text" name="content" value="<%=member.getContent() %>" size="10" ></label>
-		<label><span></span>
-			<input type="submit" value="수정" name="B1">&nbsp;&nbsp;
+		<label><span>제목</span><br><br>
+			<input type="text" name="title" value="<%=member.getTitle() %>" style="width:300px;" ></label><br><br>
+		<label><span>내용</span><br><br>
+			<input type="text" name="content" value="<%=member.getContent() %>" style="width:300px; height:300px;"></label>
+		<label><span></span><br><br>
+			<input type="submit" value="수정" name="B1"><br><br>
 			<input type="reset" value="재작성" name="B2"></label>
 	</form>
+</div>
 </body>
 </html>

@@ -13,24 +13,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>메인 페이지</title>
 <style>
-		td, th { text-align: center; }
-		.button {
-			font-weight: bold; font-size: 9pt;
-			border: 1px solid powderblue;
-		}
-		input[type=submit] {
-			width: 5em; height: 2.5em;
-			font-weight: bold; font-size: 10pt;
-		}
-	</style>
+	th { background : yellowgreen; }
+	td, th { text-align: center; }
+	.button {
+		font-weight: bold; font-size: 9pt;
+		border: 1px solid powderblue;
+	}
+	input[type=submit] {
+		width: 5em; height: 2.5em;
+		font-weight: bold; font-size: 10pt;
+	}
+	a:hover { color : pink; }
+</style>
 </head>
 <body>
+<div align=center>
 	<h3>회원 명단</h3>
-	<%=(String)session.getAttribute("memberName")%> 회원님 반갑습니다.
+	<%=(String)session.getAttribute("memberName")%> 회원님 반갑습니다.&nbsp;&nbsp;&nbsp;
 	<a href="twitter_list.jsp">트윗</a>&nbsp;&nbsp;&nbsp;
 	<a href="noticeBoard.jsp">게시판</a>&nbsp;&nbsp;&nbsp;
 	<a href="/jspbook/member/memberProcServlet?action=logout">로그아웃</a>
 	<hr>
+	<br>
 	<table border="1" style="border-collapse:collapse;">
 	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th><th>액션</th></tr>
 	<%
@@ -50,5 +54,6 @@
 		}
 	%>
 	</table>
+</div>
 </body>
 </html>

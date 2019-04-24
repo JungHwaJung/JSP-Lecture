@@ -13,6 +13,7 @@
 		display : block; 
 		padding : 5px;
 	}
+	a:hover { color : pink; }
 </style>
 </head>
 <body>
@@ -21,7 +22,7 @@
 	<a href="noticeBoard.jsp">게시판으로</a>
 	<HR>
 	<form action="/jspbook/member/noticeServlet?action=write" method="POST">
-		제목 <input type="text" name="title"><br><br>
+		제목 <input type="text" name="title" style="width:300px;"><br><br>
 		글내용 <input type="text" name="content" style="width:300px; height:300px;"><br><br>
 		<input type="submit" value="등록">
 	</form>

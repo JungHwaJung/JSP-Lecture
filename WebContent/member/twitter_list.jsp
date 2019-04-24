@@ -8,6 +8,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>twitter_list.jsp</title>
+<style>
+	a:hover { color : pink; }
+</style>
 </head>
 <body>
 <div align=center>
