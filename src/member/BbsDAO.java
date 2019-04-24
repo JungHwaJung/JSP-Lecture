@@ -50,17 +50,17 @@ public class BbsDAO {
 		}	
     }
     
-	public BbsMember selectOne(int id) {
+	public BbsDTO selectOne(int id) {
 		String query = "select * from bbs where id=?;";
 		PreparedStatement pStmt = null;
-		BbsMember bDto = new BbsMember();
+		BbsDTO bDto = new BbsDTO();
 		try {
 			pStmt = conn.prepareStatement(query);
 			pStmt.setInt(1, id);
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {				
 				bDto.setId(rs.getInt(1));
-				bDto.setName(rs.getString(2));
+				bDto.setMemberId(rs.getInt(2));
 				bDto.setTitle(rs.getString(3));
 				bDto.setDate(rs.getString(4));
 				bDto.setContent(rs.getString(5));
@@ -79,10 +79,39 @@ public class BbsDAO {
 		return bDto;
 	}
 	
+	public BbsMember read(int id) {
+		String query = "select bbs.id, bbs.title, member.name, bbs.date, bbs.content from bbs " +
+				"inner join member on bbs.memberId=member.id where bbs.id=?;";
+		PreparedStatement pStmt = null;
+		BbsMember bDto = new BbsMember();
+		try {
+			pStmt = conn.prepareStatement(query);
+			pStmt.setInt(1, id);
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {	
+				bDto.setId(rs.getInt(1));
+				bDto.setTitle(rs.getString(2));
+				bDto.setName(rs.getString(3));
+				bDto.setDate(rs.getString(4));
+				bDto.setContent(rs.getString(5));
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed()) 
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return bDto;
+	}
 	 
     public List<BbsMember> selectAll() {
-		String sql = "select bbs.id, member.name, bbs.title, bbs.date, bbs.content from bbs " +
-					"inner join member on bbs.memberId=member.id;";
+		String sql = "select bbs.id, bbs.title, member.name, bbs.date, bbs.content from bbs " +
+				"inner join member on bbs.memberId=member.id;";
 		PreparedStatement pStmt= null;
 		List<BbsMember> memberList = new ArrayList<BbsMember>();
 		try {
@@ -92,10 +121,10 @@ public class BbsDAO {
 			while (rs.next()) {
 				BbsMember members = new BbsMember();
 				members.setId(rs.getInt(1));		
-				members.setName(rs.getString(2));
-				members.setTitle(rs.getString(3));
-				members.setContent(rs.getString(4));
-				members.setDate(rs.getString(5));
+				members.setTitle(rs.getString(2));
+				members.setName(rs.getString(3));
+				members.setDate(rs.getString(4));
+				members.setContent(rs.getString(5));
 				memberList.add(members);
 			}
 			rs.close();
@@ -166,6 +195,8 @@ public class BbsDAO {
 	}
 	
 	public void insertBbs(BbsDTO dto) {
+		
+		
 		PreparedStatement pStmt = null;
 		String query = "insert into bbs (memberId, title, content) values(?, ?, ?);";
 		pStmt = null;

@@ -24,6 +24,15 @@ public class BbsMember {
 		
 	}
 	
+	public BbsMember(int id, String title, String name, String date, String content) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.name = name;
+		this.date = date;
+		this.content = content;
+	}
+
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
 	public String getTitle() { return title; }
@@ -44,4 +53,5 @@ public class BbsMember {
 		return "BbsMember [id=" + id + ", title=" + title + ", name=" + name + 
 				", date=" + date.substring(0, 16) + "]";
 	}
+
 }

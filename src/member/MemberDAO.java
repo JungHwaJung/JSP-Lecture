@@ -186,11 +186,11 @@ public class MemberDAO {
 		return memberList;
 	}
 	
-	 public MemberDTO searchById(int memberId) {
+	public MemberDTO searchById(int memberId) {
 	    	String sql = "select * from member where id=" + memberId + ";";
 	    	MemberDTO mDto = selectOne(sql);
 	    	return mDto;
-	    }
+	}
 	
 	public MemberDTO resentId() {
 		String sql = "select * from member order by id desc limit 1;";

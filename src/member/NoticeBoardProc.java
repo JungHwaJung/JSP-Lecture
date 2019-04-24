@@ -31,6 +31,7 @@ public class NoticeBoardProc extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BbsMember bDto = null;
 		BbsDAO bDao = null;
+		BbsDTO dto = null;
 		int id = 0;
 		String url = null;
 		HttpSession session = request.getSession();
@@ -48,8 +49,11 @@ public class NoticeBoardProc extends HttpServlet {
 			if(!request.getParameter("id").equals("")) {
 				id = Integer.parseInt(request.getParameter("id"));
 			}
-			if(memberId != (Integer)session.getAttribute("memberId")) {
-				message = "id=" + id + " 에 대한 수정 권한이 없습니다.";
+			bDao = new BbsDAO();
+			dto = bDao.selectOne(id);
+			//System.out.println(dto.toString());
+			if(memberId != dto.getMemberId()) {
+				message = "글에 대한 수정 권한이 없습니다.";
 				url = "noticeBoard.jsp";
 				request.setAttribute("message", message);
 				request.setAttribute("url", url);
@@ -57,17 +61,16 @@ public class NoticeBoardProc extends HttpServlet {
 				rd.forward(request, response);
 				break;
 			}
-			bDao = new BbsDAO();
-			bDto = bDao.selectOne(id);
+			bDto = bDao.read(id);
 			request.setAttribute("bDto", bDto);
 			rd = request.getRequestDispatcher("nbupdate.jsp");
 			rd.forward(request, response);
 			break;
 		
-		case "write":
+		case "write":			//글쓸때
 			title = request.getParameter("title");
 			content = request.getParameter("content");
-			BbsDTO dto = new BbsDTO(memberId, title, content);
+			dto = new BbsDTO(memberId, title, content);
 			
 			bDao = new BbsDAO();
 			bDao.insertBbs(dto);
@@ -75,7 +78,18 @@ public class NoticeBoardProc extends HttpServlet {
 			response.sendRedirect("noticeBoard.jsp");
 			break;
 		
-		case "execute":
+		case "read":			//글내용
+			if(!request.getParameter("id").equals("")) {
+				id = Integer.parseInt(request.getParameter("id"));
+			}
+			bDao = new BbsDAO();
+			bDto = bDao.read(id);
+			request.setAttribute("bDto", bDto);
+			rd = request.getRequestDispatcher("readContent.jsp");
+			rd.forward(request, response);
+			break;
+		
+		case "execute":				//수정하기
 			if (!request.getParameter("id").equals("")) {
 				id = Integer.parseInt(request.getParameter("id"));
 			}
@@ -98,11 +112,13 @@ public class NoticeBoardProc extends HttpServlet {
 			break;
 			
 		case "delete":			//삭제버튼
-			if (!request.getParameter("id").equals("")) {
+			if(!request.getParameter("id").equals("")) {
 				id = Integer.parseInt(request.getParameter("id"));
 			}
-			if(memberId != (Integer)session.getAttribute("memberId")) {
-				message = "id=" + id + " 에 대한 삭제 권한이 없습니다.";
+			bDao = new BbsDAO();
+			dto = bDao.selectOne(id);
+			if(memberId != dto.getMemberId()) {
+				message = "글에 대한 삭제 권한이 없습니다.";
 				url = "noticeBoard.jsp";
 				request.setAttribute("message", message);
 				request.setAttribute("url", url);
@@ -125,5 +141,6 @@ public class NoticeBoardProc extends HttpServlet {
 		default: 
 		}
 	}
+
 
 }

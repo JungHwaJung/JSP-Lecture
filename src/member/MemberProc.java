@@ -65,7 +65,7 @@ public class MemberProc extends HttpServlet {
 			rd = request.getRequestDispatcher("update.jsp");
 			rd.forward(request, response);
 			break;
-			
+
 		case "delete":			//삭제버튼
 			if (!request.getParameter("id").equals("")) {
 				id = Integer.parseInt(request.getParameter("id"));

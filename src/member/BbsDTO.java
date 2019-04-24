@@ -34,6 +34,6 @@ public class BbsDTO {
 	@Override
 	public String toString() {
 		return "Bbs [id=" + id + ", memberId=" + memberId + ", title=" + title +
-				", date=" + date.substring(0, 16) + ", content=" + content + "]";
+				  ", content=" + content + "]";
 	}
 }
