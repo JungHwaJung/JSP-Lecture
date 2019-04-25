@@ -41,6 +41,10 @@
 		&nbsp;<button onclick="location.href='memberProcServlet?action=delete&id=${bm.id}'">삭제</button>&nbsp;</td></tr>
 	</c:forEach>
 	</table>
+	<c:set var="pageList" value="${requestScope.pageList}"/>
+	<c:forEach var="pageNo" items="${pageList}">
+		${pageNo}
+	</c:forEach>
 </div>
 </body>
 </html>
