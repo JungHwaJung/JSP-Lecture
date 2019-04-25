@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class MemberDAO {
 	public static final int ID_PASSWORD_MATCH = 1;
@@ -52,6 +53,69 @@ public class MemberDAO {
             }
 	    }
 		return members;
+	}
+	
+	public int getCount() {
+		String query = "select count(*) from member;";
+		PreparedStatement pStmt = null;
+		int count = 0;
+		try {
+			pStmt = conn.prepareStatement(query);
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {				
+				count = rs.getInt(1);
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed()) 
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return count;
+	}
+	
+	public List<MemberDTO> selectJoinAll(int page) {
+		int offset = 0;
+		String query = null;
+		if (page == 0) {	// page가 0이면 모든 데이터를 보냄
+			query = "select member.id, member.name, member.birthday, member.address from member;";
+		} else {			// page가 0이 아니면 해당 페이지 데이터만 보냄
+			query = "select member.id, member.name, member.birthday, member.address from member " + 
+					"order by member.id asc limit ?, 10;";
+			offset = (page - 1) * 10;
+		}
+		PreparedStatement pStmt = null;
+		List<MemberDTO> mList = new ArrayList<MemberDTO>();
+		try {
+			pStmt = conn.prepareStatement(query);
+			if (page != 0)
+				pStmt.setInt(1, offset);
+			ResultSet rs = pStmt.executeQuery();
+			while (rs.next()) {	
+				MemberDTO mDto = new MemberDTO();
+				mDto.setId(rs.getInt(1));
+				mDto.setName(rs.getString(2));
+				mDto.setBirthday(rs.getString(3));
+				mDto.setAddress(rs.getString(4));
+				mList.add(mDto);
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pStmt != null && !pStmt.isClosed()) 
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return mList;
 	}
 	
 	public void insertMember(MemberDTO members) {
