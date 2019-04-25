@@ -19,13 +19,6 @@
 </style>
 </head>
 <body>
-<%
-	String error = (String) request.getParameter("error");
-	System.out.println(error);
-	if (error != null) {
-		out.println("<script>alert('" + error + "')</script>");
-	}
-%>
 	<center>
 	<h3>Member Login</h3>
 	<hr>

@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="member.*" import="java.util.*"%>
-<%
-	request.setCharacterEncoding("UTF-8");
-	MemberDAO mDao = new MemberDAO();
-	List<MemberDTO> list = mDao.selectAll();
-	mDao.close();
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,30 +23,23 @@
 <body>
 <div align=center>
 	<h3>회원 명단</h3>
-	<%=(String)session.getAttribute("memberName")%> 회원님 반갑습니다.&nbsp;&nbsp;&nbsp;
+	${memberName} 회원님 반갑습니다.&nbsp;&nbsp;&nbsp;
 	<a href="twitter_list.jsp">트윗</a>&nbsp;&nbsp;&nbsp;
-	<a href="noticeBoard.jsp">게시판</a>&nbsp;&nbsp;&nbsp;
+	<a href="noticeServlet?action=list&page=1">게시판</a>&nbsp;&nbsp;
 	<a href="/jspbook/member/memberProcServlet?action=logout">로그아웃</a>
 	<hr>
 	<br>
 	<table border="1" style="border-collapse:collapse;">
 	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th><th>액션</th></tr>
-	<%
-		for(MemberDTO member : list) {
-	%>
-	<tr><td><%=member.getId() %></td>
-		<td><%=member.getName() %></td>
-		<td><%=member.getBirthday() %></td>
-		<td><%=member.getAddress() %></td>
-		<%
-			String updateUri = "memberProcServlet?action=update&id=" + member.getId();
-			String deleteUri = "memberProcServlet?action=delete&id=" + member.getId();
-		%>
-		<td>&nbsp;<button onclick="location.href='<%=updateUri%>'">수정</button>
-		&nbsp;<button onclick="location.href='<%=deleteUri%>'">삭제</button>&nbsp;</td></tr>
-	<%
-		}
-	%>
+	<c:set var="bmList" value="${requestScope.bbsMemberList}"/>
+	<c:forEach var="bm" items="${bmList}">
+	<tr><td>${bm.id}</td>
+		<td>${bm.name}</td>
+		<td>${bm.birthday}</td>
+		<td>${bm.address}</td>
+		<td>&nbsp;<button onclick="location.href='memberProcServlet?action=update&id=${bm.id}'">수정</button>
+		&nbsp;<button onclick="location.href='memberProcServlet?action=delete&id=${bm.id}'">삭제</button>&nbsp;</td></tr>
+	</c:forEach>
 	</table>
 </div>
 </body>
