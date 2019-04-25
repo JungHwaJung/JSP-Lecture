@@ -20,24 +20,21 @@
 	<HR>
 	<form action="/jspbook/member/twitServlet" method="POST">
 		<!-- 세션에 저장된 이름 출력 -->
-		@<%=session.getAttribute("memberName") %>&nbsp;
+		@${memberName}&nbsp;
 		<input type="text" name="msg">&nbsp;&nbsp;<input type="submit" value="트윗">
 	</form>
 	<HR>
 	<div align="left">
-	<UL>
-	<%
-		// application 내장객체를 통해 msgs 이름으로 저장된 ArrayList를 가지고 옴
-		ArrayList<String>msgs = (ArrayList<String>)application.getAttribute("msgs");
-		
-		//msgs가 null 이 아닌 경우에만 목록 출력
-		if(msgs != null) {
-			for(String msg : msgs) {
-				out.println("<LI>"+msg+"</LI>");
-			}
-		}
-	%>
-	</UL>
+	<ul>
+		<!-- application 내장객체를 통해 msgs 이름으로 저장된 ArrayList를 가지고 옴 -->
+		<c:set var="msgs" value="${applicationScope.msgs}"/>
+		<!-- msgs가 null 이 아닌 경우에만 목록 출력 -->
+		<c:if test="${not empty msgs}">
+			<c:forEach var="msg" items="${msgs}">
+				<li>${msg}</li>
+			</c:forEach>
+		</c:if>
+	</ul>
 	</div>
 	</div>
 </body>
