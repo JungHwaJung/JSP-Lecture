@@ -1,5 +1,7 @@
 package member;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,7 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BbsDAO {
+	private static final Logger LOG = LoggerFactory.getLogger(BbsDAO.class);
+
     private static final String USERNAME = "javauser";
     private static final String PASSWORD = "javapass";
     private static final String URL = "jdbc:mysql://localhost:3306/world?verifyServerCertificate=false&useSSL=false";
@@ -49,6 +56,32 @@ public class BbsDAO {
 			}
 		}	
     }
+    
+    public String prepareDownload() {
+		LOG.trace("");
+		StringBuffer sb = new StringBuffer();
+		List<BbsMember> bList = selectAll();
+		
+		try {
+			FileWriter fw = new FileWriter("C:/Temp/NoticeList.csv");
+			String head = "글번호,글제목,이름,날짜\r\n";
+			sb.append(head);
+			fw.write(head);
+			LOG.debug(head);
+			for (BbsMember bDto : bList) {
+				String line = bDto.getId() + "," + bDto.getTitle() + "," + bDto.getName() + ","
+						+ bDto.getDate() + "\r\n";
+				sb.append(line);
+				fw.write(line);
+				LOG.debug(line);
+			}
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
     
     public int getCount() {
 		String query = "select count(*) from bbs;";
