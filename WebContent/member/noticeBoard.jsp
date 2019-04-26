@@ -21,6 +21,7 @@
 	<H3>게시판</H3>
 	${memberName} 회원님 반갑습니다.<br>
 	<a href="memberProcServlet?action=list&page=1">회원 목록으로</a><br><br>
+	<a href="noticeFileProc">다운로드</a>&nbsp;&nbsp;
 	<a href="write.jsp">글쓰기</a><br>
 	<HR>
 	<br>
