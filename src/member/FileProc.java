@@ -31,44 +31,90 @@ public class FileProc extends HttpServlet {
 		FileInputStream fis = null;
 		BufferedOutputStream bos = null;
 		BufferedInputStream bis = null;
+		String sb = null;
+		String client = null;
 		int length;
+		request.setCharacterEncoding("UTF-8");
+		String action = request.getParameter("action");
 		
-		MemberDAO mDao = new MemberDAO();
-		String sb = mDao.prepareDownload();
-		String client = request.getHeader("User-Agent");
-		// 파일 다운로드 헤더 지정
-		response.reset() ;
-		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Description", "JSP Generated Data");
-		
-		if(client.indexOf("MSIE") != -1) {		// Internet Explorer
-			response.setHeader ("Content-Disposition", "attachment; filename=ClientMemberList.csv");
-		} else {			// IE 이외
-			response.setHeader("Content-Disposition", "attachment; filename=\"ClientMemberList.csv\"");
-			response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
-		} 
-		File file = new File("C:/Temp/MemberList.csv");
-		response.setHeader ("Content-Length", "" + file.length());
-		
-		try {
-			fis = new FileInputStream(file);
-			bis = new BufferedInputStream(fis);
-			bos = new BufferedOutputStream(response.getOutputStream());
-			byte[] bytes = new byte[1024];
-			while ((length = bis.read(bytes)) != -1) {
-				LOG.debug("Length = " + length);
-				bos.write(bytes, 0, length);
+		switch(action) {
+		case "member":
+			MemberDAO mDao = new MemberDAO();
+			sb = mDao.prepareDownload();
+			client = request.getHeader("User-Agent");
+			// 파일 다운로드 헤더 지정
+			response.reset() ;
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-Description", "JSP Generated Data");
+			
+			if(client.indexOf("MSIE") != -1) {		// Internet Explorer
+				response.setHeader ("Content-Disposition", "attachment; filename=ClientMemberList.csv");
+			} else {			// IE 이외
+				response.setHeader("Content-Disposition", "attachment; filename=\"ClientMemberList.csv\"");
+				response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
+			} 
+			File file = new File("C:/Temp/MemberList.csv");
+			response.setHeader ("Content-Length", "" + file.length());
+			
+			try {
+				fis = new FileInputStream(file);
+				bis = new BufferedInputStream(fis);
+				bos = new BufferedOutputStream(response.getOutputStream());
+				byte[] bytes = new byte[1024];
+				while ((length = bis.read(bytes)) != -1) {
+					LOG.debug("Length = " + length);
+					bos.write(bytes, 0, length);
+				}
+				bos.flush();
+				bos.close();
+				bis.close();
+				fis.close();
+			} catch (IllegalStateException e1) {
+				LOG.info("doGet(): IllegalStateException Error");
+			} catch (Exception e) {
+				LOG.debug(e.getMessage());
 			}
-			bos.flush();
-			bos.close();
-			bis.close();
-			fis.close();
-		} catch (IllegalStateException e1) {
-			LOG.info("doGet(): IllegalStateException Error");
-		} catch (Exception e) {
-			LOG.debug(e.getMessage());
+			LOG.trace("After try");	
+			break;
+			
+		case "bbs":
+			BbsDAO bDao = new BbsDAO();
+			sb = bDao.prepareDownload();
+			client = request.getHeader("User-Agent");
+			// 파일 다운로드 헤더 지정
+			response.reset() ;
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-Description", "JSP Generated Data");
+			
+			if(client.indexOf("MSIE") != -1) {		// Internet Explorer
+				response.setHeader ("Content-Disposition", "attachment; filename=ClientNoticeList.csv");
+			} else {			// IE 이외
+				response.setHeader("Content-Disposition", "attachment; filename=\"ClientNoticeList.csv\"");
+				response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
+			} 
+			file = new File("C:/Temp/NoticeList.csv");
+			response.setHeader ("Content-Length", "" + file.length());
+			
+			try {
+				fis = new FileInputStream(file);
+				bis = new BufferedInputStream(fis);
+				bos = new BufferedOutputStream(response.getOutputStream());
+				byte[] bytes = new byte[1024];
+				while ((length = bis.read(bytes)) != -1) {
+					LOG.debug("Length = " + length);
+					bos.write(bytes, 0, length);
+				}
+				bos.flush();
+				bos.close();
+				bis.close();
+				fis.close();
+			} catch (IllegalStateException e1) {
+				LOG.info("doGet(): IllegalStateException Error");
+			} catch (Exception e) {
+				LOG.debug(e.getMessage());
+			}
+			LOG.trace("After try");
 		}
-		LOG.trace("After try");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
